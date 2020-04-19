@@ -1,5 +1,6 @@
 require('../connection');
 const mongoose = require('mongoose')
+const jwt = require('jsonwebtoken')
 const userSchema = new mongoose.Schema({
     username : {
         type : String,
@@ -19,7 +20,13 @@ const userSchema = new mongoose.Schema({
     link : {
         type : String,
         require : true
-    }
+     },
+     tokens : [{
+         token : {
+             type : String,
+             require : true
+         }
+     }]
 })
 
 userSchema.statics.isUniqueCode = async function(somestring) {
@@ -34,6 +41,14 @@ userSchema.statics.isUniqueCode = async function(somestring) {
     }catch(e){
         console.log(e)
     }
+}
+
+userSchema.methods.generateToken = async function(usercode){
+    const user = this
+    const token = jwt.sign({ '_id' : user._id , 'userCode' : usercode},'psychsecretstring')
+    user.tokens = user.tokens.concat({token})
+    await user.save()
+    return token
 }
 const User = mongoose.model('User',userSchema)
 module.exports = User

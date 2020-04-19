@@ -6,7 +6,7 @@ exports.codeGenerate = function( username) {
             length : 10,
             charset : name,
             readable : true
-        })
+        }).replace(/\s/g, "")
         const repsonse = {
             username : name ,
             userCode : userCode
