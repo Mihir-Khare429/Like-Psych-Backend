@@ -1,21 +1,31 @@
 {
   "name": "psych",
   "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
+  "description": "game",
+  "main": "server.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "nodemon index.js"
+    "start": "node server.js"
   },
-  "author": "",
+  "author": "Navya",
   "license": "ISC",
   "dependencies": {
     "body-parser": "^1.19.0",
     "express": "^4.17.1",
     "jsonwebtoken": "^8.5.1",
+    "moment": "^2.27.0",
     "mongodb": "^3.5.6",
     "mongoose": "^5.9.9",
     "nodemon": "^2.0.3",
-    "randomstring": "^1.1.5"
-  }
+    "randomstring": "^1.1.5",
+    "socket.io": "^2.3.0"
+  },
+  "devDependencies": {},
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/NavyaSaxena29/Psych-Ripoff.git"
+  },
+  "bugs": {
+    "url": "https://github.com/NavyaSaxena29/Psych-Ripoff/issues"
+  },
+  "homepage": "https://github.com/NavyaSaxena29/Psych-Ripoff#readme"
 }
