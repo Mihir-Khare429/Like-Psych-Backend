@@ -3,12 +3,11 @@ const chatMessages = document.querySelector('.chat-messages')
 const roomName = document.getElementById('room-name')
 const userList = document.getElementById('users')
 
-
 const {username, userCode} = Qs.parse(location.search, {
     ignoreQueryPrefix: true
 })
 
-const socket = io()
+const socket = io('http://localhost:7000')
 
 if(!userCode){
     socket.emit('createRoom', {username})
@@ -26,6 +25,11 @@ socket.on('message', message => {
     outputMessage(message)
 
     chatMessages.scrollTop = chatMessages.scrollHeight
+})
+
+socket.on('dispMem',(data)=>{
+    const members = JSON.stringify(data)
+    outputUsers(members)
 })
 
 chatForm.addEventListener('submit', (e) => {
@@ -54,8 +58,9 @@ function outputRoomName(userCode) {
 }
 
 function outputUsers(users){
-    //console.log(users)
+    const data = JSON.parse(users)
+    // userList.innerHTML = data[0].username
     userList.innerHTML = `
-        ${users.map(user => `<li>${user.username}</li>`).join('')}
+        ${data.map(dat => `<li>${dat.username}</li>`).join('')}
     `
 }

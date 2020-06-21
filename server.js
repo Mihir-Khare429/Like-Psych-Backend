@@ -15,15 +15,15 @@ app.use(express.static(path.join(__dirname,'public')))
 const botName = 'GameBot'
 
 io.on('connection', socket => {
-    socket.on('joinRoom',({username,userCode}) => {
+    socket.on('joinRoom',async ({username,userCode}) => {
             
-        const user = userJoin(socket.id,username,userCode)
-
-        socket.join(user.userCode)
-
+        const user = await userJoin(userCode,username,socket.id)
+        socket.join(userCode)
+        const rMembers = await getRoomUsers(userCode)
+        socket.emit('dispMem',rMembers)
         socket.emit('message', formatMessage(botName,'Welcome to the Game'));
 
-        socket.broadcast.to(user.userCode).emit('message', formatMessage(botName,`${user.username} has joined the chat`));
+        socket.broadcast.to(userCode).emit('message', formatMessage(botName,`${user.username} has joined the chat`));
 
         // const usernames = getRoomUsers(user.userCode)
         // io.to(user.userCode).emit('roomUsers', {

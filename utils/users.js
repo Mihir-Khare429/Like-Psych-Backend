@@ -37,15 +37,15 @@ const userJoin = async function(userCode,username,id){
         members.push(temp)
         room.members = members
         room.save()
-        var finalObj =[]
-        members.forEach(mem => {
-            var t = {
-                username : mem.username,
-                role : mem.role
-            }
-            finalObj.push(t)
-        })
-        return finalObj
+        // var finalObj =[]
+        // members.forEach(mem => {
+        //     var t = {
+        //         username : mem.username,
+        //         role : mem.role
+        //     }
+        //     finalObj.push(t)
+        // })
+        return temp
     }catch(err){
         console.log('Error with the userJoin function')
         console.log(err)
