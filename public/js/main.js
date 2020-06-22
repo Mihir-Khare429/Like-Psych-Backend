@@ -21,15 +21,17 @@ socket.on('roomUsers', ({userCode, users}) => {
 })
 
 socket.on('message', message => {
-    console.log(message)
     outputMessage(message)
-
     chatMessages.scrollTop = chatMessages.scrollHeight
 })
 
 socket.on('dispMem',(data)=>{
     const members = JSON.stringify(data)
     outputUsers(members)
+})
+
+socket.on('dispRoom',(data)=> {
+    outputRoomName(data)
 })
 
 chatForm.addEventListener('submit', (e) => {

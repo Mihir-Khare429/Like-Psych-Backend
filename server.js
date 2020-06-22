@@ -5,6 +5,7 @@ const http = require('http')
 const socketio = require('socket.io')
 const formatMessage = require('./utils/messages')
 const {userJoin, createRoomCode, getCurrentUser, userLeave, getRoomUsers} = require('./utils/users')
+const { SSL_OP_NO_TICKET } = require('constants')
 
 const app = express()
 const server = http.createServer(app)
@@ -20,7 +21,8 @@ io.on('connection', socket => {
         const user = await userJoin(userCode,username,socket.id)
         socket.join(userCode)
         const rMembers = await getRoomUsers(userCode)
-        socket.emit('dispMem',rMembers)
+        socket.emit('dispRoom',userCode)
+        io.in(userCode).emit('dispMem',rMembers)
         socket.emit('message', formatMessage(botName,'Welcome to the Game'));
 
         socket.broadcast.to(userCode).emit('message', formatMessage(botName,`${user.username} has joined the chat`));
