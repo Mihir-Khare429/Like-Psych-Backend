@@ -8,12 +8,16 @@ const {username, userCode} = Qs.parse(location.search, {
 })
 
 const socket = io('http://localhost:7000')
+window.addEventListener("beforeunload", function() {
+    return "Write something clever here..";
+  });
 
 if(!userCode){
     socket.emit('createRoom', {username})
 } else {
     socket.emit('joinRoom', {username, userCode})
 }
+
 
 socket.on('roomUsers', ({userCode, users}) => {
     outputRoomName(userCode)

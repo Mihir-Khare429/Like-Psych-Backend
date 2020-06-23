@@ -11,6 +11,7 @@ const app = express()
 const server = http.createServer(app)
 const io = exports.io = socketio(server)
 
+
 app.use(express.static(path.join(__dirname,'public')))
 
 const botName = 'GameBot'
@@ -43,10 +44,12 @@ io.on('connection', socket => {
         // });
     })
 
-    socket.on('createRoom',({username}) => {
-        const user = createRoomCode(socket.id,username)
-
+    socket.on('createRoom',async ({username}) => {
+        const user = await createRoomCode(socket.id,username)
         socket.join(user.userCode)
+        const rMembers = await getRoomUsers(user.userCode)
+        socket.emit('dispRoom',user.userCode)
+        io.in(user.userCode).emit('dispMem',rMembers)
 
         socket.emit('message', formatMessage(botName,'Welcome to the Game! The Game Code is '+user.userCode))
 
