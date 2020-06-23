@@ -36,7 +36,7 @@ const userJoin = async function(userCode,username,id){
         var temp = {username: username, id: id}
         members.push(temp)
         room.members = members
-        room.save()
+        await room.save()
         // var finalObj =[]
         // members.forEach(mem => {
         //     var t = {
