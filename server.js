@@ -5,6 +5,7 @@ const http = require('http')
 const socketio = require('socket.io')
 const formatMessage = require('./utils/messages')
 const {userJoin, createRoomCode, getCurrentUser, userLeave, getRoomUsers} = require('./utils/users')
+const startQuiz = require('./utils/admin')
 const { SSL_OP_NO_TICKET } = require('constants')
 
 const app = express()
@@ -28,6 +29,8 @@ io.on('connection', socket => {
 
         socket.broadcast.to(userCode).emit('message', formatMessage(botName,`${user.username} has joined the chat`));
 
+        
+
         // const usernames = getRoomUsers(user.userCode)
         // io.to(user.userCode).emit('roomUsers', {
         //     userCode: user.userCode,
@@ -42,6 +45,12 @@ io.on('connection', socket => {
         // }).catch(e => {
         //     console.log(e)
         // });
+    })
+
+    socket.on('quizInitiateRequest',async (data)=>{
+        console.log(data)
+        const quizData =await startQuiz(data)
+        io.in(data.userCode).emit('quizQuestions',quizData)
     })
 
     socket.on('createRoom',async ({username}) => {

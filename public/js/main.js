@@ -2,6 +2,7 @@ const chatForm = document.getElementById('chat-form')
 const chatMessages = document.querySelector('.chat-messages')
 const roomName = document.getElementById('room-name')
 const userList = document.getElementById('users')
+const startQuiz = document.getElementById('startQuiz')
 
 const {username, userCode} = Qs.parse(location.search, {
     ignoreQueryPrefix: true
@@ -35,6 +36,20 @@ socket.on('dispRoom',(data)=> {
     outputRoomName(data)
 })
 
+startQuiz.addEventListener('click',function(){
+    let user = {
+        userCode : roomName.innerText,
+        role : 1,
+        id:socket.id
+    }
+    console.log(user)
+    socket.emit('quizInitiateRequest',user)
+})
+
+socket.on('quizQuestions',(data)=> {
+    console.log(data)
+})
+
 chatForm.addEventListener('submit', (e) => {
     e.preventDefault()
 
@@ -62,6 +77,7 @@ function outputRoomName(userCode) {
 
 function outputUsers(users){
     const data = JSON.parse(users)
+    console.log(data)
     // userList.innerHTML = data[0].username
     userList.innerHTML = `
         ${data.map(dat => `<li>${dat.username}</li>`).join('')}
