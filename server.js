@@ -1,5 +1,5 @@
 const express = require('express')
-const PORT = 7000 || process.env.PORT
+const PORT = process.env.PORT||7000
 const path = require('path')
 const http = require('http')
 const socketio = require('socket.io')
