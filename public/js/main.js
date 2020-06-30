@@ -8,7 +8,7 @@ const {username, userCode} = Qs.parse(location.search, {
     ignoreQueryPrefix: true
 })
 
-const socket = io('http://localhost:7000')
+const socket = io(HOST)
 
 if(!userCode){
     socket.emit('createRoom', {username})
